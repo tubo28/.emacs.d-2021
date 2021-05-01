@@ -39,30 +39,31 @@
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
 
+;; custom-set-* で init.el が汚染されるのを防ぐ
 (leaf cus-edit
   :doc "tools for customizing Emacs and Lisp packages"
   :tag "builtin" "faces" "help"
   :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
 
-
+;; ファイルが変更されたら自動で再読み込み数r
 (leaf autorevert
   :doc "revert buffers when files on disk change"
   :tag "builtin"
   :custom ((auto-revert-interval . 1))
   :global-minor-mode global-auto-revert-mode)
 
-
+;; 選択状態でペーストすると選択していたものを削除し置き換える
 (leaf delsel
   :doc "delete selection if you insert"
   :tag "builtin"
   :global-minor-mode delete-selection-mode)
 
+;; 対応するカッコを強調表示する
 (leaf paren
   :doc "highlight matching paren"
   :tag "builtin"
   :custom ((show-paren-delay . 0.1))
   :global-minor-mode show-paren-mode)
-
 
 (leaf simple
   :doc "basic editing commands for Emacs"
@@ -73,7 +74,7 @@
            (eval-expression-print-length . nil)
            (eval-expression-print-level . nil)))
 
-
+;; ファイルの自動バックアップなどの設定
 (leaf files
   :doc "file input and output commands for Emacs"
   :tag "builtin"
@@ -85,12 +86,10 @@
             (version-control . t)
             (delete-old-versions . t)))
 
-
 (leaf startup
   :doc "process Emacs shell arguments"
   :tag "builtin" "internal"
   :custom `((auto-save-list-file-prefix . ,(locate-user-emacs-file "backup/.saves-"))))
-
 
 (leaf ivy
   :doc "Incremental Vertical completion"
@@ -199,7 +198,7 @@
   :config
   (add-to-list 'company-backends 'company-c-headers))
 
-
+;; 変更履歴を見やすくする
 (leaf undo-tree
   :doc "Visual undo and redo"
   :url "https://github.com/apchamberlain/undo-tree.el"
@@ -209,7 +208,7 @@
   :bind (("C-z" . undo-tree-undo))
   :global-minor-mode global-undo-tree-mode)
 
-
+;; 起動画面をよくする
 (leaf dashboard
   :doc "An extensible emacs startup screen showing you what’s most important."
   :url "https://github.com/emacs-dashboard/emacs-dashboard"
@@ -220,7 +219,7 @@
   :config
   (dashboard-setup-startup-hook))
 
-
+;; 最近開いたファイル
 (leaf recentf
   :added "2021-05-01"
   :custom ((recentf-max-saved-items . 500)
@@ -229,7 +228,7 @@
   :ensure t
   :global-minor-mode t)
 
-
+;; 貼り付けなどの操作で変更された部分を強調する
 (leaf volatile-highlights
   :doc "Minor mode for visual feedback on some operations."
   :url "https://github.com/k-talo/volatile-highlights.el"
@@ -237,14 +236,14 @@
   :ensure t
   :global-minor-mode t)
 
-
+;; カーソル業をハイライトする
 (leaf hl-line
   :added "2021-05-01"
   :ensure t
   :custom ((hl-line-face . 'underline))
   :global-minor-mode global-hl-line-mode)
 
-
+;; 見た目がきれいな置換
 (leaf anzu
   :doc "Visualize query-replace"
   :url "https://github.com/emacsorphanage/anzu"
@@ -257,8 +256,9 @@
   :bind (("C-r" . anzu-query-replace)
          ("M-C-r" . anzu-query-replace-regexp)))
 
-
+;; キーバインドの補助
 (leaf which-key
+  :added "2021-05-01"
   :ensure t
   :global-minor-mode t)
 
@@ -292,6 +292,11 @@
          ("\\.markdown$'" . markdown-mode)))
 
 
+;;;
+;;; leafでインストールするpackageに関係しない設定
+;;;
+
+;; 切り取りは選択中のみ行う
 (defun cut-if-selected ()
   "Do 'kill-region' only if region is active."
   (interactive)
@@ -299,6 +304,7 @@
       (kill-region (region-beginning) (region-end))))
 (global-set-key (kbd "C-w") 'cut-if-selected)
 
+;; 選択中でなかったらバッファ全体をコピーする
 (defun copy-all-if-not-selected ()
   "Do 'kill-ring-save' for entire buffer if region is not active."
   (interactive)
@@ -348,11 +354,14 @@
 
 ;;; 改行時にインデント
 (global-set-key (kbd "<RET>") 'newline-and-indent)
-;;; C-g周辺の~キー誤爆防止
+
+;;; C-g周辺のキー誤爆防止
 (global-set-key (kbd "C-h") 'delete-backward-char)
 (global-set-key (kbd "C-t") nil)
+
 ;;; C-jで補完
 (global-set-key (kbd "C-j") 'dabbrev-expand)
+
 ;;; C-x C-b = C-x b (switch-to-buffer)
 (define-key global-map (kbd "C-x C-b") 'switch-to-buffer)
 
