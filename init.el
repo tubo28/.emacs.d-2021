@@ -149,7 +149,6 @@
   :custom ((ivy-prescient-retain-classic-highlighting . t))
   :global-minor-mode t)
 
-
 (leaf flycheck
   :doc "On-the-fly syntax checking"
   :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
@@ -161,7 +160,6 @@
          ("M-p" . flycheck-previous-error))
   :global-minor-mode global-flycheck-mode
   :custom ((flycheck-check-syntax-automatically . '(mode-enabled save))))
-
 
 (leaf company
   :doc "Modular text completion framework"
@@ -207,7 +205,9 @@
   :emacs>= 24
   :ensure t
   :bind (("C-z" . undo-tree-undo))
-  :global-minor-mode global-undo-tree-mode)
+  :global-minor-mode global-undo-tree-mode
+  :blackout ((global-undo-tree-mode . "")
+             (undo-tree-mode . "")))
 
 ;; 起動画面をよくする
 (leaf dashboard
@@ -235,7 +235,8 @@
   :url "https://github.com/k-talo/volatile-highlights.el"
   :added "2021-05-01"
   :ensure t
-  :global-minor-mode t)
+  :global-minor-mode t
+  :blackout t)
 
 ;; カーソル業をハイライトする
 (leaf hl-line
@@ -261,7 +262,8 @@
 (leaf which-key
   :added "2021-05-01"
   :ensure t
-  :global-minor-mode t)
+  :global-minor-mode t
+  :blackout ((which-key-mode . "")))
 
 ;; 変更部分を画面左に表示
 (leaf git-gutter
@@ -273,14 +275,18 @@
   (set-face-foreground 'git-gutter:deleted "red")
   :custom
   ((git-gutter:update-interval . 2))
-  :global-minor-mode global-git-gutter-mode)
+  :global-minor-mode global-git-gutter-mode
+  :blackout ((global-git-gutter-mode . "")
+             (git-gutter-mode . "")))
 
 (leaf whitespace
   :added "2021-05-01"
   :ensure t
   :custom
   ((whitespace-style . '(face tabs newline trailing tab-mark space-before-tab space-after-tab)))
-  :global-minor-mode global-whitespace-mode)
+  :global-minor-mode global-whitespace-mode
+  :blackout ((global-whitespace-mode . "")
+             (whitespace-mode        . "")))
 
 ;;;
 ;;; 言語ごとのminer-mode
