@@ -2,6 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
+;; GCを抑制しパフォーマンス向上
+(setq gc-cons-percentage (* gc-cons-percentage 4))
+(setq gc-cons-threshold (* gc-cons-threshold 4))
+
 ;; "Package cl is deprecated" を無視する
 (setq byte-compile-warnings '(not cl-functions obsolete))
 
