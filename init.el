@@ -258,6 +258,18 @@
   :ensure t
   :global-minor-mode t)
 
+;; 変更部分を画面左に表示
+(leaf git-gutter
+  :added "2021-05-01"
+  :ensure t
+  :config
+  (set-face-foreground 'git-gutter:modified "yellow")
+  (set-face-foreground 'git-gutter:added "green")
+  (set-face-foreground 'git-gutter:deleted "red")
+  :custom
+  ((git-gutter:update-interval . 2))
+  :global-minor-mode global-git-gutter-mode)
+
 
 ;;;
 ;;; 言語ごとのminer-mode
