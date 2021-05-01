@@ -45,7 +45,7 @@
   :tag "builtin" "faces" "help"
   :custom `((custom-file . ,(locate-user-emacs-file "custom.el"))))
 
-;; ファイルが変更されたら自動で再読み込み数r
+;; ファイルが変更されたら自動で再読み込み
 (leaf autorevert
   :doc "revert buffers when files on disk change"
   :tag "builtin"
@@ -136,7 +136,7 @@
   :ensure t
   :custom ((prescient-aggressive-file-save . t))
   :global-minor-mode prescient-persist-mode)
-  
+
 (leaf ivy-prescient
   :doc "prescient.el + Ivy"
   :req "emacs-25.1" "prescient-4.0" "ivy-0.11.0"
@@ -215,7 +215,7 @@
   :added "2021-05-01"
   :ensure t
   :custom ((dashboard-items . '((recents . 100)
-				(bookmarks . 5))))
+                                (bookmarks . 5))))
   :config
   (dashboard-setup-startup-hook))
 
@@ -224,7 +224,7 @@
   :added "2021-05-01"
   :custom ((recentf-max-saved-items . 500)
            (recentf-max-menu-items . 15)
-	   (recentf-auto-cleanup . 'never))
+           (recentf-auto-cleanup . 'never))
   :ensure t
   :global-minor-mode t)
 
@@ -274,6 +274,12 @@
   ((git-gutter:update-interval . 2))
   :global-minor-mode global-git-gutter-mode)
 
+(leaf whitespace
+  :added "2021-05-01"
+  :ensure t
+  :custom
+  ((whitespace-style . '(face tabs newline trailing tab-mark space-before-tab space-after-tab)))
+  :global-minor-mode global-whitespace-mode)
 
 ;;;
 ;;; 言語ごとのminer-mode
@@ -282,7 +288,7 @@
   :added "2021-05-01"
   :ensure t
   :mode (("\\.yml$" . yaml-mode)
-	 ("\\.yaml$" . yaml-mode)))
+         ("\\.yaml$" . yaml-mode)))
 
 
 (leaf markdown-mode
@@ -371,12 +377,12 @@
 (if (eq system-type 'darwin)
     (progn
       (defun copy-from-osx ()
-	(shell-command-to-string "pbpaste"))
+        (shell-command-to-string "pbpaste"))
       (defun paste-to-osx (text &optional push)
-	(let ((process-connection-type nil))
-	  (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-	    (process-send-string proc text)
-	    (process-send-eof proc))))
+        (let ((process-connection-type nil))
+          (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+            (process-send-string proc text)
+            (process-send-eof proc))))
       (setq interprogram-cut-function 'paste-to-osx)
       (setq interprogram-paste-function 'copy-from-osx)))
 
