@@ -386,6 +386,9 @@
       (setq interprogram-cut-function 'paste-to-osx)
       (setq interprogram-paste-function 'copy-from-osx)))
 
+;;; ファイルの末尾に改行を入れる
+(setq-default require-final-newline t)
+
 (provide 'init)
 
 ;;; init.el ends here
