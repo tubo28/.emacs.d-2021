@@ -324,6 +324,12 @@
 (setq-default mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq-default scroll-step 1) ;; keyboard scroll one line at a time
 
+;; ターミナルではツールバーとメニューバーを非表示
+(if (not window-system)
+    (progn
+      (tool-bar-mode -1)
+      (menu-bar-mode -1)))
+
 ;;; 改行時にインデント
 (global-set-key (kbd "<RET>") 'newline-and-indent)
 ;;; C-g周辺の~キー誤爆防止
@@ -334,6 +340,20 @@
 ;;; C-x C-b = C-x b (switch-to-buffer)
 (define-key global-map (kbd "C-x C-b") 'switch-to-buffer)
 
+;;; Macでクリップボードとkill-ringを共通化
+;;; OS X 10.10 以降は reattach-to-user-namespace が不要
+;;; https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard/issues/66
+(if (eq system-type 'darwin)
+    (progn
+      (defun copy-from-osx ()
+	(shell-command-to-string "pbpaste"))
+      (defun paste-to-osx (text &optional push)
+	(let ((process-connection-type nil))
+	  (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+	    (process-send-string proc text)
+	    (process-send-eof proc))))
+      (setq interprogram-cut-function 'paste-to-osx)
+      (setq interprogram-paste-function 'copy-from-osx)))
 
 (provide 'init)
 
