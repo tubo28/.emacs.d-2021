@@ -101,7 +101,8 @@
   :blackout t
   :leaf-defer nil
   :custom ((ivy-initial-inputs-alist . nil)
-           (ivy-use-selectable-prompt . t))
+           (ivy-use-selectable-prompt . t)
+           (ivy-height . 30))
   :global-minor-mode t
   :config
   (leaf swiper
