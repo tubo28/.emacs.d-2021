@@ -279,6 +279,7 @@
   :blackout ((global-git-gutter-mode . "")
              (git-gutter-mode . "")))
 
+;; 空白文字の見た目を制御
 (leaf whitespace
   :added "2021-05-01"
   :ensure t
@@ -288,6 +289,12 @@
   :blackout ((global-whitespace-mode . "")
              (whitespace-mode        . "")))
 
+;; mini-buffer や tab のファイル名にディレクトリ名を表示
+(leaf uniquify
+  :custom
+  ((uniquify-buffer-name-style . 'post-forward-angle-brackets)
+   (uniquify-min-dir-content   . 1)))
+
 ;;;
 ;;; 言語ごとのminer-mode
 ;;;
@@ -296,7 +303,6 @@
   :ensure t
   :mode (("\\.yml$" . yaml-mode)
          ("\\.yaml$" . yaml-mode)))
-
 
 (leaf markdown-mode
   :added "2021-05-01"
@@ -359,11 +365,14 @@
 (setq-default mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq-default scroll-step 1) ;; keyboard scroll one line at a time
 
-;; ターミナルではツールバーとメニューバーを非表示
+;; ターミナルではGUIのいろいろを無効化
 (if (not window-system)
     (progn
-      (tool-bar-mode -1)
-      (menu-bar-mode -1)))
+      (tool-bar-mode      -1)
+      (scroll-bar-mode    -1)
+      (menu-bar-mode      -1)
+      (blink-cursor-mode  -1)
+      (column-number-mode -1)))
 
 ;;; 改行時にインデント
 (global-set-key (kbd "<RET>") 'newline-and-indent)
