@@ -26,7 +26,6 @@
   (unless (package-installed-p 'leaf)
     (package-refresh-contents)
     (package-install 'leaf))
-
   (leaf leaf-keywords
     :ensure t
     :init
@@ -34,7 +33,6 @@
     (leaf hydra :ensure t)
     (leaf el-get :ensure t)
     (leaf blackout :ensure t)
-
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
@@ -388,7 +386,7 @@
 (define-key global-map (kbd "C-x C-b") 'switch-to-buffer)
 
 ;;; Macでクリップボードとkill-ringを共通化
-;;; OS X 10.10 以降は reattach-to-user-namespace が不要
+;;; OS X 10.10 以降はreattach-to-user-namespaceが不要
 ;;; https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard/issues/66
 (if (eq system-type 'darwin)
     (progn
