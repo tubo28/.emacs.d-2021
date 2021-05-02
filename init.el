@@ -333,6 +333,18 @@
 ;; UTF-8をデフォルトとする
 (set-default-coding-systems 'utf-8-unix)
 
+;; tab 幅 4
+(setq-default tab-width 4)
+;; tab ではインデントしない
+(setq-default indent-tabs-mode nil)
+;; align-regexp でも tab ではなく space を使う
+(defadvice align-regexp (around align-regexp-with-spaces activate)
+  "`align-regexp` with no tabs."
+  (let ((old-indent-tabs-mode indent-tabs-mode))
+    (setq indent-tabs-mode nil)
+    ad-do-it
+    (setq indent-tabs-mode old-indent-tabs-mode)))
+
 ;;; yes/no -> y/n
 (fset 'yes-or-no-p 'y-or-n-p)
 
