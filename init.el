@@ -313,22 +313,20 @@
 ;;; leafでインストールするpackageに関係しない設定
 ;;;
 
-;; 切り取りは選択中のみ行う
+;; 選択中なら切り取る
 (defun cut-if-selected ()
   "Do 'kill-region' only if region is active."
   (interactive)
   (if (region-active-p)
       (kill-region (region-beginning) (region-end))))
-(global-set-key (kbd "C-w") 'cut-if-selected)
 
-;; 選択中でなかったらバッファ全体をコピーする
+;; 選択中なら選択部分を、そうでなかったらバッファ全体をコピーする
 (defun copy-all-if-not-selected ()
   "Do 'kill-ring-save' for entire buffer if region is not active."
   (interactive)
   (if (region-active-p)
       (kill-ring-save (region-beginning) (region-end))
     (kill-ring-save (point-min) (point-max))))
-(global-set-key (kbd "M-w") 'copy-all-if-not-selected)
 
 ;; UTF-8をデフォルトとする
 (set-default-coding-systems 'utf-8-unix)
@@ -384,15 +382,19 @@
       (blink-cursor-mode  -1)
       (column-number-mode -1)))
 
-;;; 改行時にインデント
-(global-set-key (kbd "<RET>") 'newline-and-indent)
-
-;;; C-g周辺のキー誤爆防止
-(global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "C-t") nil)
-
-;;; C-jで補完
-(global-set-key (kbd "C-j") 'dabbrev-expand)
+(leaf *global-set-key
+  :leaf-autoload nil
+  :bind
+  ;; 改行時にインデント
+  ("<RET>" . newline-and-indent)
+  ;; C-g周辺のキー誤爆防止
+  ("C-h" . delete-backward-char)
+  ("C-t" . nil)
+  ;; C-jで補完
+  ("C-j" . dabbrev-expand)
+  ;; 切り取り関係
+  ("C-w" . cut-if-selected)
+  ("M-w" . copy-all-if-not-selected))
 
 ;;; C-x C-b = C-x b (switch-to-buffer)
 (define-key global-map (kbd "C-x C-b") 'switch-to-buffer)
