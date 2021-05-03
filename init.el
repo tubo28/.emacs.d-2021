@@ -377,10 +377,10 @@
 (if (not window-system)
     (progn
       (tool-bar-mode      -1)
-      (scroll-bar-mode    -1)
       (menu-bar-mode      -1)
       (blink-cursor-mode  -1)
-      (column-number-mode -1)))
+      ;; ビルド方法によってはscroll-bar-modeが定義されてないことがある
+      (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))))
 
 (leaf *global-set-key
   :leaf-autoload nil
