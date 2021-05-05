@@ -203,6 +203,10 @@
   :emacs>= 24
   :ensure t
   :bind (("C-z" . undo-tree-undo))
+  :config
+  ;; C-_ への bind が上書きされていると undo-tree-mode が有効化されないことへの対策
+  ;; https://github.com/syl20bnr/spacemacs/issues/14064#issuecomment-723324830
+  (defun undo-tree-overridden-undo-bindings-p () nil)
   :global-minor-mode global-undo-tree-mode
   :blackout ((global-undo-tree-mode . "")
              (undo-tree-mode . "")))
@@ -386,18 +390,23 @@
   :leaf-autoload nil
   :bind
   ;; 改行時にインデント
-  ("<RET>" . newline-and-indent)
-  ;; C-g周辺のキー誤爆防止
-  ("C-h" . delete-backward-char)
-  ("C-t" . nil)
-  ;; C-jで補完
-  ("C-j" . dabbrev-expand)
-  ;; 切り取り関係
-  ("C-w" . cut-if-selected)
-  ("M-w" . copy-all-if-not-selected))
-
-;;; C-x C-b = C-x b (switch-to-buffer)
-(define-key global-map (kbd "C-x C-b") 'switch-to-buffer)
+  (("<RET>" . newline-and-indent)
+   ;; C-g周辺のキー誤爆防止
+   ("C-h" . delete-backward-char)
+   ("C-t" . nil)
+   ;; C-jで補完
+   ("C-j" . dabbrev-expand)
+   ;; 切り取り関係
+   ("C-w" . cut-if-selected)
+   ("M-w" . copy-all-if-not-selected)
+   ;; C-x C-b = C-x b
+   ("C-x C-b" . switch-to-buffer))
+  :bind*
+  ;; C-/ でコメントアウト
+  ;; ターミナルでは C-_ と解釈されるので両方に割り当てる
+  ;; https://apple.stackexchange.com/questions/24261/how-do-i-send-c-that-is-control-slash-to-the-terminal
+  (("C-_" . comment-dwim)
+   ("C-/" . comment-dwim)))
 
 ;;; Macでクリップボードとkill-ringを共通化
 ;;; OS X 10.10 以降はreattach-to-user-namespaceが不要
