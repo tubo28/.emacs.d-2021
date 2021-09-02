@@ -313,6 +313,12 @@
   :mode (("\\.md$'" . markdown-mode)
          ("\\.markdown$'" . markdown-mode)))
 
+(leaf graphviz-dot-mode
+  :ensure t
+  :config
+  (setq graphviz-dot-indent-width 4))
+
+(leaf company-graphviz-dot)
 
 (leaf fish-mode :ensure t)
 
