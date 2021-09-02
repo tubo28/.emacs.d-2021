@@ -314,6 +314,8 @@
          ("\\.markdown$'" . markdown-mode)))
 
 
+(leaf fish-mode :ensure t)
+
 ;;;
 ;;; leafでインストールするpackageに関係しない設定
 ;;;
