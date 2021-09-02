@@ -202,7 +202,8 @@
   :added "2021-05-01"
   :emacs>= 24
   :ensure t
-  :bind (("C-z" . undo-tree-undo))
+  :bind (("C-z" . undo-tree-undo)
+         ("C-c C-z" . undo-tree-redo))
   :config
   ;; C-_ への bind が上書きされていると undo-tree-mode が有効化されないことへの対策
   ;; https://github.com/syl20bnr/spacemacs/issues/14064#issuecomment-723324830
