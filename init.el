@@ -363,6 +363,9 @@
       (kill-ring-save (region-beginning) (region-end))
     (kill-ring-save (point-min) (point-max))))
 
+;; 色を黒背景ターミナル用にする
+(setq frame-background-mode 'dark)
+
 ;; UTF-8をデフォルトとする
 (set-default-coding-systems 'utf-8-unix)
 
