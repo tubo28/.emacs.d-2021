@@ -322,6 +322,28 @@
 
 (leaf fish-mode :ensure t)
 
+(leaf nginx-mode :ensure t)
+
+;; go-mode
+(leaf go-mode
+  :ensure t
+  :commands go-mode
+  :custom
+  ((gofmt-command . "goimports"))
+  :config
+  (add-hook 'before-save-hook 'gofmt-before-save))
+
+
+;; rust
+(add-to-list 'exec-path (expand-file-name "~/.cargo/bin"))
+(leaf rust-mode
+  :ensure t
+  :custom
+  ((rust-format-on-save . t)))
+(leaf cargo
+  :ensure t
+  :hook (rust-mode . cargo-minor-mode))
+
 ;;;
 ;;; leafでインストールするpackageに関係しない設定
 ;;;
