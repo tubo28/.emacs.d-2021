@@ -447,15 +447,14 @@
 ;;; https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard/issues/66
 (if (eq system-type 'darwin)
     (progn
-      (defun copy-from-osx ()
-        (shell-command-to-string "pbpaste"))
       (defun paste-to-osx (text &optional push)
         (let ((process-connection-type nil))
           (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
             (process-send-string proc text)
             (process-send-eof proc))))
       (setq interprogram-cut-function 'paste-to-osx)
-      (setq interprogram-paste-function 'copy-from-osx)))
+      ;; copyはこれでOK
+      (setq select-enable-clipboard t)))
 
 ;;; ファイルの末尾に改行を入れる
 (setq-default require-final-newline t)
