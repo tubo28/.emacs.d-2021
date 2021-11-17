@@ -333,16 +333,36 @@
   :config
   (add-hook 'before-save-hook 'gofmt-before-save))
 
-
-;; rust
+;; mode for rust
 (add-to-list 'exec-path (expand-file-name "~/.cargo/bin"))
-(leaf rust-mode
+(leaf rustic
   :ensure t
+  :mode ("\\.rs\\'" . rustic-mode)
+  :hook ((rustic-mode . flycheck-rust-setup)
+         (rustic-mode . rustic-flycheck-setup)
+         (rustic-mode . lsp-mode))
   :custom
-  ((rust-format-on-save . t)))
-(leaf cargo
+  ((rustic-format-on-save . t)))
+
+(leaf lsp-mode
   :ensure t
-  :hook (rust-mode . cargo-minor-mode))
+  :commands lsp
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  ((lsp-rust-analyzer-cargo-watch-command . "clippy")
+   (lsp-eldoc-render-all . t)
+   (lsp-idle-delay . 0.6)
+   (lsp-rust-analyzer-server-display-inlay-hints . t))
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(leaf lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :custom
+  ((lsp-ui-peek-always-show . t)
+   (lsp-ui-sideline-show-hover . t)
+   (lsp-ui-doc-enable . nil)))
 
 ;;;
 ;;; leafでインストールするpackageに関係しない設定
