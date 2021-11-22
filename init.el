@@ -329,7 +329,8 @@
   :ensure t
   :commands go-mode
   :custom
-  ((gofmt-command . "goimports"))
+  ((gofmt-command . "goimports")
+   (whitespace-style . '(face newline trailing space-before-tab space-after-tab)))
   :config
   (add-hook 'before-save-hook 'gofmt-before-save))
 
@@ -344,6 +345,17 @@
   :custom
   ((rustic-format-on-save . t)))
 
+;; go-mode
+(defun lsp-go-install-save-hooks()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(leaf go-mode
+  :ensure t
+  :mode (("\\.go\\'" . go-mode))
+  :init
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+
+;; LSP
 (leaf lsp-mode
   :ensure t
   :commands lsp
