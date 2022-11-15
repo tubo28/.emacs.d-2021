@@ -355,6 +355,9 @@
   :init
   (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
 
+;; Dockerfile
+(leaf dockerfile-mode :ensure t)
+
 ;; LSP
 (leaf lsp-mode
   :ensure t
