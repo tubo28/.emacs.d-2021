@@ -379,6 +379,14 @@
    (lsp-ui-sideline-show-hover . t)
    (lsp-ui-doc-enable . nil)))
 
+;;; Format on save
+(defun my/lsp-format-buffer-if-enabled ()
+  "Run lsp-format-buffer if lsp-mode is active in the current buffer."
+  (when (and (bound-and-true-p lsp-mode)
+             (lsp-feature? "textDocument/formatting"))
+    (lsp-format-buffer)))
+(add-hook 'before-save-hook #'my/lsp-format-buffer-if-enabled)
+
 ;;;
 ;;; leafでインストールするpackageに関係しない設定
 ;;;
